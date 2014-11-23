@@ -57,6 +57,7 @@ function createBarGraph (listLatLong,listType){
                                 return d;
                               })])
                               .range([h-padding,padding]);
+
 			//Create SVG element
 			var svg = d3.select("body")
 						.append("svg")
