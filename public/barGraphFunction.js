@@ -59,7 +59,7 @@ function createBarGraph (listLatLong,listType){
                               .range([h-padding,padding]);
 
 			//Create SVG element
-			var svg = d3.select("body")
+			var svg = d3.select("#latLongBarGraph")
 						.append("svg")
 						.attr("width", w)
 						.attr("height", h);
