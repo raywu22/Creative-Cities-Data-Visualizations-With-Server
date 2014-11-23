@@ -1,12 +1,16 @@
 var express = require('express');
+var http = require('http');
+var https = require('https');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var url = require('url');
+var querystring = require('querystring');
 var mongo = require('mongodb');
 var monk = require('monk');
+
 
 var connection_string = 'localhost:27017/citiesDB';
 var db = monk(connection_string);
