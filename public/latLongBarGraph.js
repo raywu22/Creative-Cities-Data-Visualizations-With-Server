@@ -36,7 +36,7 @@ function createLatLongBarGraph (listLatLong,listType){
 	}
 
 	function makeBarGraph(dataset){
-			console.log(dataset);
+			//console.log(dataset);
 			var xScale = d3.scale.ordinal()
 							.domain(d3.range(dataset.length))
 							.rangeRoundBands([padding, w-padding], 0.05);
@@ -91,7 +91,6 @@ function createLatLongBarGraph (listLatLong,listType){
 			   		return 0;
 			   })
 			   .attr("fill",function(d,i) {
-			   		console.log(i);
 			   		if (i%3===0) {
 			   			return "#1f77b4";
 			   		}
