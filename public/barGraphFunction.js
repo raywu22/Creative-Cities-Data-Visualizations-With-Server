@@ -1,4 +1,4 @@
-function createBarGraph (listLatLong,listType){
+function createLatLongBarGraph (listLatLong,listType){
 
 	var h = 400;
 	var w = 600;
@@ -286,3 +286,8 @@ function createBarGraph (listLatLong,listType){
 	}
 }
 
+function createDoubleBarGraph(firstCity,secondCity){
+	var h = 400;
+	var w = 600;
+	
+}
