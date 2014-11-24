@@ -11,8 +11,8 @@ function createDoubleBarGraph(firstCity,secondCity){
 	});
 
 	function makeDoubleBarGraph(citiesData,whichCity,first,widthPortion){
-		var height = 400;
-		var width = 600*widthPortion;
+		var height = 500;
+		var width = 1000*widthPortion;
 		var padding = 60;
 		var cityData;
 		for (var j=0;j<3;j++){
@@ -30,7 +30,8 @@ function createDoubleBarGraph(firstCity,secondCity){
 
 		var xAxis = d3.svg.axis()
 				.scale(x)
-				.orient("top");
+				.orient("top")
+				.ticks(10*widthPortion);
 		var svg = d3.select("body").append("svg")
 			    .attr("width", width)
 			    .attr("height", height + padding + padding)
