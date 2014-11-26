@@ -104,7 +104,6 @@ function createLatLongBarGraph (listLatLong,listType){
 			   	});
 
 	        svg.selectAll("rect")
-	            .data(dataset)
 	            .transition()
 	            .duration(1000)
 	            .attr("y",function(d){

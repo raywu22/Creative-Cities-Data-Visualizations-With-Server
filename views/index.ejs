@@ -3,26 +3,37 @@
   <head>
     <title>KendallHarvardData</title>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <link rel='stylesheet' href='/stylesheet.css' />
-  </head>
-  <body>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="./latLongBarGraph.js"></script>
     <script src="./doubleBarGraph.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="./javascripts/index.js"></script>
+  </head>
+  <body>
     <div id="tooltip" class="hidden">
       <p><span id="value">100</span></p>
     </div>
     <div id="latLongBarGraph"></div>
-    <div id="doubleBarGraph"></div>
-  	<script type="text/javascript">
-  		var listLatLong = [[42.366029,-71.085838],[42.375427,-71.118670]];
-      var listType = ["restaurantbakerybarcafe","schooluniversity","subway_stationtaxi_standtrain_station"];
+    
+    <div class="whichCity-first">
+      <ul class="nav nav-pills">
+        <li class="button1 active"><a href="#">Boston</a></li>
+        <li class="button1"><a href="#">San Francisco</a></li>
+        <li class="button1"><a href="#">New York</a></li>
+      </ul>
+    </div>
+    <div class="whichCity-second">
+      <ul class="nav nav-pills">
+        <li class="button2"><a href="#">Boston</a></li>
+        <li class="button2 active"><a href="#">San Francisco</a></li>
+        <li class="button2"><a href="#">New York</a></li>
+      </ul>
+    </div>
 
-      var firstCity = "New York";
-      var secondCity = "Boston";
-  		createLatLongBarGraph(listLatLong,listType);
-      createDoubleBarGraph(firstCity,secondCity);
-  	</script>
+    <div id="doubleBarGraph"></div>
   </body>
 </html>

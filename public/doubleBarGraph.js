@@ -5,14 +5,13 @@ function createDoubleBarGraph(firstCity,secondCity){
 		widthSecond = getWidth(citiesData,secondCity,false);
 		widthFirstPortion = widthFirst/(widthFirst+widthSecond);
 		widthSecondPortion = widthSecond/(widthFirst+widthSecond);
-		console.log(widthFirst+" "+widthSecond)
 		makeDoubleBarGraph(citiesData,firstCity,true,widthFirstPortion);
 		makeDoubleBarGraph(citiesData,secondCity,false,widthSecondPortion);
 	});
 
 	function makeDoubleBarGraph(citiesData,whichCity,first,widthPortion){
 		var height = 500;
-		var width = 1000*widthPortion;
+		var width = 600*widthPortion;
 		var padding = 60;
 		var cityData;
 		for (var j=0;j<3;j++){
@@ -32,7 +31,7 @@ function createDoubleBarGraph(firstCity,secondCity){
 				.scale(x)
 				.orient("top")
 				.ticks(10*widthPortion);
-		var svg = d3.select("body").append("svg")
+		var svg = d3.select("#doubleBarGraph").append("svg")
 			    .attr("width", width)
 			    .attr("height", height + padding + padding)
 			  	.append("g")
@@ -47,13 +46,35 @@ function createDoubleBarGraph(firstCity,secondCity){
 
 		svg.selectAll(".bar")
 			.data(cityData)
-			.enter().append("rect")
-			.attr("class", function(d) { return summAll(d.value) < 0 ? "bar negative" : "bar positive"; })
-			.attr("x", function(d) { return x(Math.min(0, summAll(d.value))); })
-			.attr("y", function(d) { return y(d.name); })
-			.attr("width", function(d) { return Math.abs(x(summAll(d.value)) - x(0)); })
+			.enter()
+			.append("rect")
+			.attr("x", function(d) { 
+				if (first){
+					return width;
+				}
+				else {
+					return 0;					
+				}
+			})
+			.attr("y", function(d) { 
+				return y(d.name); 
+			})
+			.attr("width", function(d) { 
+				return 0;
+			})
 			.attr("height", y.rangeBand())
 			.attr("fill","#1f77b4");
+
+		svg.selectAll("rect")
+			.transition()
+			.duration(1000)
+			.attr("x",function(d){
+				console.log(d);
+				return x(Math.min(0, summAll(d.value)));
+			})
+			.attr("width",function(d){
+				return Math.abs(x(summAll(d.value)) - x(0));
+			})
 
 		svg.append("g")
 			.attr("class", "x axis")

@@ -14,6 +14,7 @@ router.get('/data',function(req,res){
             res.end();
         });
     });
+    console.log(result);
 });
 
 router.get('/',function(req,res,next){
