@@ -21,6 +21,7 @@ function createLatLongBarGraph (listLatLong,listType){
 
 	function makeCallBack(index) {
 		return function(placesData){
+			console.log(placesData)
 			//console.log([""+latPoint+","+longPoint],currentListType,i,j);
 			allPlacesData[index]=placesData["results"].length;
 			var isFull = true;

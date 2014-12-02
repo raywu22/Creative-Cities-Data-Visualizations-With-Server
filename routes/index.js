@@ -10,11 +10,12 @@ router.get('/data',function(req,res){
             result += data.toString();
         });
         response.on('end', function() {
+            
             res.send(result);
             res.end();
         });
     });
-    console.log(result);
+    
 });
 
 router.get('/',function(req,res,next){
@@ -22,6 +23,20 @@ router.get('/',function(req,res,next){
     res.end();
 });
 
+router.post('/LatLong',function(req,res,next){
+    var result = "";
+    var url = "https://maps.googleapis.com/maps/api/place/radarsearch/json?location="+req.body["LatLong1"]+"&radius=800&types=restaurant|bakery|bar|cafe&key=AIzaSyCP-j5RWqQPLnhUXt3P4RdUMVqpkz_VKxI"
+    https.get(url,function(response){
+        response.on('data',function(data){
+            result += data.toString();
+        })
+        response.on('end',function(){
+            res.send(result);
+            console.log(result);
+            res.end();
+        })
+    })
+})
 /* GET login page. */
 // router.get('/login', function(req, res) {
 //   console.log(req.session.currentUser);
