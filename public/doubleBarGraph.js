@@ -21,10 +21,13 @@ function createDoubleBarGraph(firstCity,secondCity){
 		}
 
 		cityData = convertCityData(cityData,first);	
-
+		console.log(cityData);
 		var x = d3.scale.linear()
+				.domain(d3.extent(cityData, function(d) { return summAll(d.value); }))
+				.nice()
 				.range([0,width]);
 		var y = d3.scale.ordinal()
+				.domain(cityData.map(function(d) { return d.name; }))
 				.rangeRoundBands([0,height],0.2);
 
 		var xAxis = d3.svg.axis()
@@ -40,9 +43,6 @@ function createDoubleBarGraph(firstCity,secondCity){
 		function summAll(valueD) {
 			return valueD.reduce(function(a,b){return a+b});
 		}
-
-		x.domain(d3.extent(cityData, function(d) { return summAll(d.value); })).nice();
-		y.domain(cityData.map(function(d) { return d.name; }));
 
 		svg.selectAll(".bar")
 			.data(cityData)
@@ -69,7 +69,6 @@ function createDoubleBarGraph(firstCity,secondCity){
 			.transition()
 			.duration(1000)
 			.attr("x",function(d){
-				console.log(d);
 				return x(Math.min(0, summAll(d.value)));
 			})
 			.attr("width",function(d){
@@ -98,7 +97,6 @@ function createDoubleBarGraph(firstCity,secondCity){
 
 		cityData = convertCityData(cityData,first);	
 
-
 		function summAll(valueD) {
 			return valueD.reduce(function(a,b){return a+b});
 		}
@@ -108,14 +106,13 @@ function createDoubleBarGraph(firstCity,secondCity){
 		else {
 			return Math.abs(d3.extent(cityData, function(d) { return summAll(d.value); })[1]);
 		}
-
 	}	
 	
 	function convertCityData(cityData,first){
 		cityArray = []
 		for (var r=0;r<cityData["children"].length;r++){
 			var zipCode = cityData["children"][r]["name"];
-			var schoolCompanyFood = []
+			var schoolCompanyFood = [];
 			for (var t=0;t<3;t++){
 				if (first){
 					schoolCompanyFood.push(-1*cityData["children"][r]["children"][t]["size"])
