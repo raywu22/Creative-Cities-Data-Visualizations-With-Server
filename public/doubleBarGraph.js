@@ -21,7 +21,7 @@ function createDoubleBarGraph(firstCity,secondCity){
 		}
 
 		cityData = convertCityData(cityData,first);	
-		console.log(cityData);
+		//console.log(cityData);
 		var x = d3.scale.linear()
 				.domain(d3.extent(cityData, function(d) { return summAll(d.value); }))
 				.nice()

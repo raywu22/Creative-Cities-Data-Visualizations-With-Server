@@ -7,6 +7,7 @@ function createLatLongBarGraph (listLatLong,listType){
 	for (var m=0;m<listLatLong.length*listType.length;m++){
 		allPlacesData.push(-1);
 	}
+	console.log(allPlacesData);
 	for (var i=0;i<listLatLong.length;i++){
 		var latPoint = listLatLong[i][0];
 		var longPoint = listLatLong[i][1];
@@ -21,7 +22,7 @@ function createLatLongBarGraph (listLatLong,listType){
 
 	function makeCallBack(index) {
 		return function(placesData){
-			console.log(placesData)
+			//console.log(placesData)
 			//console.log([""+latPoint+","+longPoint],currentListType,i,j);
 			allPlacesData[index]=placesData["results"].length;
 			var isFull = true;
