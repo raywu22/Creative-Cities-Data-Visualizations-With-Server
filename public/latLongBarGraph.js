@@ -7,7 +7,7 @@ function createLatLongBarGraph (listLatLong,listType){
 	for (var m=0;m<listLatLong.length*listType.length;m++){
 		allPlacesData.push(-1);
 	}
-	console.log(allPlacesData);
+	//console.log(allPlacesData);
 	for (var i=0;i<listLatLong.length;i++){
 		var latPoint = listLatLong[i][0];
 		var longPoint = listLatLong[i][1];
