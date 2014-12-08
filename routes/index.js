@@ -55,36 +55,47 @@ router.post('/LatLong',function(req,res,next){
     }
 
     allPlacesData = [];
-    // for (var m=0;m<listLatLong.length/2*listType.length;m++){
-    //     allPlacesData.push(-1);
-    // }
+    for (var m=0;m<listLatLong.length/2*listType.length;m++){
+        allPlacesData.push(-1);
+    }
     LatLongLength = listLatLong.length/2;
     typeLength = listType.length;
     for (var i=0;i<LatLongLength;i++){
         for (var j=0;j<typeLength;j++){
+            var currentIndex = i*typeLength+j;
             var currentListType = listType[j]
             var startUrl = "https://maps.googleapis.com/maps/api/place/radarsearch/json?location=";
             var key = "AIzaSyCP-j5RWqQPLnhUXt3P4RdUMVqpkz_VKxI";
             var radius = 800;
             var url = startUrl+listLatLong[2*i]+","+listLatLong[2*i+1]+"&radius="+radius+"&types="+currentListType+"&key="+key;
-
-            https.get(url,makeCallBack);
+            function indexKiller(index){
+                https.get(url,function (response){
+                    makeCallBack(response,index)
+                });
+            }
+            indexKiller(currentIndex);
         }
 
     }
 
-    function makeCallBack(response){
-        console.log(allPlacesData);
+    function makeCallBack(response,index){
         var result="";
         response.on('data',function(data){
             result += data.toString()
         })
         response.on('end',function(){
             resultJSON = JSON.parse(result);
-            allPlacesData.push(resultJSON.results.length);
+            allPlacesData[index]=resultJSON.results.length;
             //console.log(response);
-            if (allPlacesData.length==6){
-                res.send(allPlacesData).end();                    
+            totalLength = LatLongLength*typeLength;
+            var isFull = true;
+            for (var n=0;n<allPlacesData.length;n++){
+                if (allPlacesData[n]==-1){
+                    isFull = false;
+                }
+            }
+            if (isFull){
+                res.send(allPlacesData).end();
 
             }
             //res.send([resultJSON.results.length]).end();                    

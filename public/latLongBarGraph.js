@@ -1,8 +1,5 @@
 function createLatLongBarGraph (listLatLong,listType){
 
-	var h = 400;
-	var w = 600;
-	var padding = 60;
 	var allPlacesData = [];
 	for (var m=0;m<listLatLong.length*listType.length;m++){
 		allPlacesData.push(-1);
@@ -20,6 +17,7 @@ function createLatLongBarGraph (listLatLong,listType){
 		}
 	}
 
+
 	function makeCallBack(index) {
 		return function(placesData){
 			//console.log(placesData)
@@ -32,146 +30,157 @@ function createLatLongBarGraph (listLatLong,listType){
 				}
 			}
 			if (isFull){
-				makeBarGraph(allPlacesData);
+				makeBarGraph(listLatLong,listType,allPlacesData);
 			}
 		}
 	}
+}
 
-	function makeBarGraph(dataset){
-			//console.log(dataset);
-			var xScale = d3.scale.ordinal()
-							.domain(d3.range(dataset.length))
-							.rangeRoundBands([padding, w-padding], 0.05);
-			var xScale2List = [];
-	        for (var x=0;x<listLatLong.length;x++){
-	        	xScale2List.push(listLatLong[x][0]+","+listLatLong[x][1]);
-	        }
-	        var xScale2 = d3.scale.ordinal()
-	                              .domain(xScale2List)
-	                              .rangeRoundBands([padding,w-padding],0.05);
+function makeBarGraph(listLatLong,listType,dataset){
+	var h = 400;
+	var w = 600;
+	var padding = 60;
+	//console.log(dataset);
+	var xScale = d3.scale.ordinal()
+					.domain(d3.range(dataset.length))
+					.rangeRoundBands([padding, w-padding], 0.05);
+	var xScale2List = [];
+    for (var x=0;x<listLatLong.length;x++){
+    	xScale2List.push(listLatLong[x][0]+","+listLatLong[x][1]);
+    }
+    var xScale2 = d3.scale.ordinal()
+                          .domain(xScale2List)
+                          .rangeRoundBands([padding,w-padding],0.05);
 
-			var yScale = d3.scale.linear()
-							.domain([0, d3.max(dataset)])
-							.range([0, h-padding*2]);
+	var yScale = d3.scale.linear()
+					.domain([0, d3.max(dataset)])
+					.range([0, h-padding*2]);
 
-			var yScale2 = d3.scale.linear()
-                              .domain([0,d3.max(dataset,function(d){
-                                return d;
-                              })])
-                              .range([h-padding,padding]);
+	var yScale2 = d3.scale.linear()
+                      .domain([0,d3.max(dataset,function(d){
+                        return d;
+                      })])
+                      .range([h-padding,padding]);
 
-			//Create SVG element
-			var svg = d3.select("#latLongBarGraph")
-						.append("svg")
-						.attr("width", w)
-						.attr("height", h);
+	//Create SVG element
+	var svg = d3.select("#latLongBarGraph")
+				.append("svg")
+				.attr("width", w)
+				.attr("height", h);
 
-			//Create bars
-	        var xAxis = d3.svg.axis()
-	                          .scale(xScale2)
-	                          .orient("bottom")
-	                          .ticks(dataset.length/3);
-	                          
+	//Create bars
+    var xAxis = d3.svg.axis()
+                      .scale(xScale2)
+                      .orient("bottom")
+                      .ticks(dataset.length/3);
+                      
 
-	        var yAxis = d3.svg.axis()
-	                          .scale(yScale2)
-	                          .orient("left")
-	                          .ticks(8);
+    var yAxis = d3.svg.axis()
+                      .scale(yScale2)
+                      .orient("left")
+                      .ticks(8);
 
-			svg.selectAll("rect")
-			   .data(dataset)
-			   .enter()
-			   .append("rect")
-			   .attr("x", function(d, i) {
-			   		return xScale(i);
-			   })
-			   .attr("y", function(d) {
-			   		return h - padding;
-			   })
-			   .attr("width", xScale.rangeBand())
-			   .attr("height", function(d) {
-			   		return 0;
-			   })
-			   .attr("fill",function(d,i) {
-			   		if (i%3===0) {
-			   			return "#1f77b4";
-			   		}
-			   		else if (i%3===1){
-			   			return "#336600";
-			   		}
-			   		else {
-			   			return "#990000";
-			   		}
-			   		
-			   	});
+	svg.selectAll("rect")
+	   .data(dataset)
+	   .enter()
+	   .append("rect")
+	   .attr("x", function(d, i) {
+	   		return xScale(i);
+	   })
+	   .attr("y", function(d) {
+	   		return h - padding;
+	   })
+	   .attr("width", xScale.rangeBand())
+	   .attr("height", function(d) {
+	   		return 0;
+	   })
+	   .attr("fill",function(d,i) {
+	   		if (i%3===0) {
+	   			return "#1f77b4";
+	   		}
+	   		else if (i%3===1){
+	   			return "#336600";
+	   		}
+	   		else {
+	   			return "#990000";
+	   		}
+	   		
+	   	});
 
-	        svg.selectAll("rect")
-	            .transition()
-	            .duration(1000)
-	            .attr("y",function(d){
-	              return h-yScale(d)-padding;
-	            })
-	            .attr("height",function(d){
-	              return yScale(d);
-	            })
-	        svg.selectAll("rect")
-	            .data(dataset)
-	            .on("mouseover", function(d) {
-	            var xPosition = parseFloat(d3.select(this).attr("x"))+10;
-	            var yPosition = parseFloat(d3.select(this).attr("y"))+h/20;
+    svg.selectAll("rect")
+        .transition()
+        .duration(1000)
+        .attr("y",function(d){
+          return h-yScale(d)-padding;
+        })
+        .attr("height",function(d){
+          return yScale(d);
+        })
+    svg.selectAll("rect")
+        .data(dataset)
+        .on("mouseover", function(d) {
+        var xPosition = parseFloat(d3.select(this).attr("x"))+10;
+        var yPosition = parseFloat(d3.select(this).attr("y"))+h/20;
 
-	            d3.select("#tooltip")
-	              .style("left", xPosition + "px")
-	              .style("top", yPosition + "px")           
-	              .select("#value")
-	              .text(d);
+        d3.select("#tooltip")
+          .style("left", xPosition + "px")
+          .style("top", yPosition + "px")           
+          .select("#value")
+          .text(d);
 
-	            d3.select("#tooltip").classed("hidden", false);
-	           	})
-	           	.on("mouseout", function() {
-	            	d3.select("#tooltip").classed("hidden", true);
-	           	})
-		    svg.append("g")
-	            .attr("class","axis")
-	            .attr("transform","translate(0,"+(h-padding)+")")
-	            .call(xAxis);
-	        svg.append("g")
-	            .attr("class","axis")
-	            .attr("id","yaxis")
-	            .attr("transform","translate(0"+padding+",0)")
-	            .call(yAxis);
-	        svg.append("text")
-	          .attr("x", (w / 2))             
-	          .attr("y", 30)
-	          .attr("text-anchor", "middle")  
-	          .style("font-size", "30px") 
-	          .style("text-decoration", "underline");
-			//Create labels
-			svg.selectAll("text")
-			   .data(dataset)
-			   .enter()
-			   .append("text")
-			   .text(function(d) {
-			   		return d;
-			   })
-			   .attr("text-anchor", "middle")
-			   .attr("x", function(d, i) {
-			   		return xScale(i) + xScale.rangeBand() / 2;
-			   })
-			   .attr("y", function(d) {
-			   		return h - yScale(d) + 14;
-			   })
-			   .attr("font-family", "sans-serif")
-			   .attr("font-size", "11px")
-			   .attr("fill", "white");
-			svg.append("text")
-		        .attr("x", ((w-padding)/ 2))             
-		        .attr("y", padding/2)
-		        .attr("text-anchor", "middle")  
-		        .style("font-size", "24px") 
-		        .style("text-decoration", "underline")  
-		        .text("Kendall and Harvard Square");
+        d3.select("#tooltip").classed("hidden", false);
+       	})
+       	.on("mouseout", function() {
+        	d3.select("#tooltip").classed("hidden", true);
+       	})
+    svg.append("g")
+        .attr("class","axis")
+        .attr("transform","translate(0,"+(h-padding)+")")
+        .call(xAxis);
+    svg.append("g")
+        .attr("class","axis")
+        .attr("id","yaxis")
+        .attr("transform","translate(0"+padding+",0)")
+        .call(yAxis);
+    svg.append("text")
+      .attr("x", (w / 2))             
+      .attr("y", 30)
+      .attr("text-anchor", "middle")  
+      .style("font-size", "30px") 
+      .style("text-decoration", "underline");
+	//Create labels
+	svg.selectAll("text")
+	   .data(dataset)
+	   .enter()
+	   .append("text")
+	   .text(function(d) {
+	   		return d;
+	   })
+	   .attr("text-anchor", "middle")
+	   .attr("x", function(d, i) {
+	   		return xScale(i) + xScale.rangeBand() / 2;
+	   })
+	   .attr("y", function(d) {
+	   		return h - yScale(d) + 14;
+	   })
+	   .attr("font-family", "sans-serif")
+	   .attr("font-size", "11px")
+	   .attr("fill", "white");
+	svg.append("text")
+        .attr("x", ((w-padding)/ 2))             
+        .attr("y", padding/2)
+        .attr("text-anchor", "middle")  
+        .style("font-size", "24px") 
+        .style("text-decoration", "underline")  
+//        .text("Kendall and Harvard Square");
+	
+	d3.select('#mySubmit')
+		.on("click",function(){
+            d3.select("svg")
+              .remove();
+        })
 
+}
 		/**
 		var xScale = d3.scale.ordinal()
                               .domain(d3.range(listLatLong.length*listType.length))
@@ -283,5 +292,3 @@ function createLatLongBarGraph (listLatLong,listType){
           .style("font-size", "30px") 
           .style("text-decoration", "underline");
 **/
-	}
-}
