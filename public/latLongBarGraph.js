@@ -1,40 +1,3 @@
-function createLatLongBarGraph (listLatLong,listType){
-
-	var allPlacesData = [];
-	for (var m=0;m<listLatLong.length*listType.length;m++){
-		allPlacesData.push(-1);
-	}
-	//console.log(allPlacesData);
-	for (var i=0;i<listLatLong.length;i++){
-		var latPoint = listLatLong[i][0];
-		var longPoint = listLatLong[i][1];
-			
-		for (var j=0;j<listType.length;j++){
-			var currentListType = listType[j];
-			url = "./Data/"+latPoint+longPoint+currentListType+".json";
-
-			d3.json(url,makeCallBack(i*listType.length+j));
-		}
-	}
-
-
-	function makeCallBack(index) {
-		return function(placesData){
-			//console.log(placesData)
-			//console.log([""+latPoint+","+longPoint],currentListType,i,j);
-			allPlacesData[index]=placesData["results"].length;
-			var isFull = true;
-			for (var n=0;n<allPlacesData.length;n++){
-				if (allPlacesData[n]==-1){
-					isFull = false;
-				}
-			}
-			if (isFull){
-				makeBarGraph(listLatLong,listType,allPlacesData);
-			}
-		}
-	}
-}
 
 function makeBarGraph(listLatLong,listType,dataset){
 	var h = 400;
@@ -45,10 +8,10 @@ function makeBarGraph(listLatLong,listType,dataset){
 					.domain(d3.range(dataset.length))
 					.rangeRoundBands([padding, w-padding], 0.05);
 	var xScale2List = [];
-    for (var x=0;x<listLatLong.length;x++){
-    	xScale2List.push(listLatLong[x][0]+","+listLatLong[x][1]);
-    }
-    var xScale2 = d3.scale.ordinal()
+  for (var x=0;x<listLatLong.length;x++){
+   	xScale2List.push(listLatLong[x][0]+","+listLatLong[x][1]);
+  }
+  var xScale2 = d3.scale.ordinal()
                           .domain(xScale2List)
                           .rangeRoundBands([padding,w-padding],0.05);
 
@@ -69,16 +32,16 @@ function makeBarGraph(listLatLong,listType,dataset){
 				.attr("height", h);
 
 	//Create bars
-    var xAxis = d3.svg.axis()
-                      .scale(xScale2)
-                      .orient("bottom")
-                      .ticks(dataset.length/3);
-                      
+  var xAxis = d3.svg.axis()
+                    .scale(xScale2)
+                    .orient("bottom")
+                    .ticks(dataset.length/3);
+                    
 
-    var yAxis = d3.svg.axis()
-                      .scale(yScale2)
-                      .orient("left")
-                      .ticks(8);
+  var yAxis = d3.svg.axis()
+                    .scale(yScale2)
+                    .orient("left")
+                    .ticks(8);
 
 	svg.selectAll("rect")
 	   .data(dataset)
@@ -107,47 +70,47 @@ function makeBarGraph(listLatLong,listType,dataset){
 	   		
 	   	});
 
-    svg.selectAll("rect")
-        .transition()
-        .duration(1000)
-        .attr("y",function(d){
-          return h-yScale(d)-padding;
-        })
-        .attr("height",function(d){
-          return yScale(d);
-        })
-    svg.selectAll("rect")
-        .data(dataset)
-        .on("mouseover", function(d) {
-        var xPosition = parseFloat(d3.select(this).attr("x"))+10;
-        var yPosition = parseFloat(d3.select(this).attr("y"))+h/20;
+  svg.selectAll("rect")
+      .transition()
+      .duration(1000)
+      .attr("y",function(d){
+        return h-yScale(d)-padding;
+      })
+      .attr("height",function(d){
+        return yScale(d);
+      })
+  svg.selectAll("rect")
+      .data(dataset)
+      .on("mouseover", function(d) {
+      var xPosition = parseFloat(d3.select(this).attr("x"))+10;
+      var yPosition = parseFloat(d3.select(this).attr("y"))+h/20;
 
-        d3.select("#tooltip")
-          .style("left", xPosition + "px")
-          .style("top", yPosition + "px")           
-          .select("#value")
-          .text(d);
+      d3.select("#tooltip")
+        .style("left", xPosition + "px")
+        .style("top", yPosition + "px")           
+        .select("#value")
+        .text(d);
 
-        d3.select("#tooltip").classed("hidden", false);
-       	})
-       	.on("mouseout", function() {
-        	d3.select("#tooltip").classed("hidden", true);
-       	})
-    svg.append("g")
-        .attr("class","axis")
-        .attr("transform","translate(0,"+(h-padding)+")")
-        .call(xAxis);
-    svg.append("g")
-        .attr("class","axis")
-        .attr("id","yaxis")
-        .attr("transform","translate(0"+padding+",0)")
-        .call(yAxis);
-    svg.append("text")
-      .attr("x", (w / 2))             
-      .attr("y", 30)
-      .attr("text-anchor", "middle")  
-      .style("font-size", "30px") 
-      .style("text-decoration", "underline");
+      d3.select("#tooltip").classed("hidden", false);
+     	})
+     	.on("mouseout", function() {
+      	d3.select("#tooltip").classed("hidden", true);
+     	})
+  svg.append("g")
+      .attr("class","axis")
+      .attr("transform","translate(0,"+(h-padding)+")")
+      .call(xAxis);
+  svg.append("g")
+      .attr("class","axis")
+      .attr("id","yaxis")
+      .attr("transform","translate(0"+padding+",0)")
+      .call(yAxis);
+  svg.append("text")
+    .attr("x", (w / 2))             
+    .attr("y", 30)
+    .attr("text-anchor", "middle")  
+    .style("font-size", "30px") 
+    .style("text-decoration", "underline");
 	//Create labels
 	svg.selectAll("text")
 	   .data(dataset)
@@ -292,3 +255,41 @@ function makeBarGraph(listLatLong,listType,dataset){
           .style("font-size", "30px") 
           .style("text-decoration", "underline");
 **/
+
+// function createLatLongBarGraph (listLatLong,listType){
+
+//  var allPlacesData = [];
+//  for (var m=0;m<listLatLong.length*listType.length;m++){
+//    allPlacesData.push(-1);
+//  }
+//  //console.log(allPlacesData);
+//  for (var i=0;i<listLatLong.length;i++){
+//    var latPoint = listLatLong[i][0];
+//    var longPoint = listLatLong[i][1];
+      
+//    for (var j=0;j<listType.length;j++){
+//      var currentListType = listType[j];
+//      url = "./Data/"+latPoint+longPoint+currentListType+".json";
+
+//      d3.json(url,makeCallBack(i*listType.length+j));
+//    }
+//  }
+
+
+//  function makeCallBack(index) {
+//    return function(placesData){
+//      //console.log(placesData)
+//      //console.log([""+latPoint+","+longPoint],currentListType,i,j);
+//      allPlacesData[index]=placesData["results"].length;
+//      var isFull = true;
+//      for (var n=0;n<allPlacesData.length;n++){
+//        if (allPlacesData[n]==-1){
+//          isFull = false;
+//        }
+//      }
+//      if (isFull){
+//        makeBarGraph(listLatLong,listType,allPlacesData);
+//      }
+//    }
+//  }
+// }

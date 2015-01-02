@@ -10,12 +10,10 @@ router.get('/data',function(req,res){
             result += data.toString();
         });
         response.on('end', function() {
-            
             res.send(result);
             res.end();
         });
     });
-    
 });
 
 router.get('/',function(req,res,next){
@@ -68,12 +66,12 @@ router.post('/LatLong',function(req,res,next){
             var key = "AIzaSyCP-j5RWqQPLnhUXt3P4RdUMVqpkz_VKxI";
             var radius = 800;
             var url = startUrl+listLatLong[2*i]+","+listLatLong[2*i+1]+"&radius="+radius+"&types="+currentListType+"&key="+key;
-            function indexKiller(index){
+            function indexOverrider(index){
                 https.get(url,function (response){
                     makeCallBack(response,index)
                 });
             }
-            indexKiller(currentIndex);
+            indexOverrider(currentIndex);
         }
 
     }
@@ -103,16 +101,6 @@ router.post('/LatLong',function(req,res,next){
         })
     }
 })
-/* GET login page. */
-// router.get('/login', function(req, res) {
-//   console.log(req.session.currentUser);
-//   if (req.session.currentUser) {
-//     res.redirect("/");
-//   }
-//   else {
-//     res.render('login', { title: 'Login' });
-//   }  
-// });
 
 
 

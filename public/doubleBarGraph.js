@@ -10,7 +10,8 @@ function createDoubleBarGraph(firstCity,secondCity){
 	});
 
 	function makeDoubleBarGraph(citiesData,whichCity,first,widthPortion){
-		var height = 500;
+		//console.log(citiesData);
+		var height = 2500;
 		var width = 600*widthPortion;
 		var padding = 60;
 		var cityData;
@@ -29,6 +30,9 @@ function createDoubleBarGraph(firstCity,secondCity){
 		var y = d3.scale.ordinal()
 				.domain(cityData.map(function(d) { return d.name; }))
 				.rangeRoundBands([0,height],0.2);
+
+		var color = d3.scale.ordinal()
+				.range(["#98abc5","#6b486b","#ff8c00"]);
 
 		var xAxis = d3.svg.axis()
 				.scale(x)
@@ -56,24 +60,34 @@ function createDoubleBarGraph(firstCity,secondCity){
 					return 0;					
 				}
 			})
-			.attr("y", function(d) { 
-				return y(d.name); 
+			.attr("y", function(d,i) { 
+				return 2+i*12; 
+				//return y(d.name); 
 			})
 			.attr("width", function(d) { 
 				return 0;
 			})
-			.attr("height", y.rangeBand())
+			//.attr("height", y.rangeBand())
+			.attr("height", 10)
 			.attr("fill","#1f77b4");
 
 		svg.selectAll("rect")
 			.transition()
 			.duration(1000)
 			.attr("x",function(d){
-				return x(Math.min(0, summAll(d.value)));
+				if (first){
+					return x(Math.min(0, summAll(d.value)));
+				}
+				else {
+					console.log(d);
+					return 0;
+				}
+				
 			})
 			.attr("width",function(d){
 				return Math.abs(x(summAll(d.value)) - x(0));
 			})
+
 
 		svg.append("g")
 			.attr("class", "x axis")
@@ -86,7 +100,7 @@ function createDoubleBarGraph(firstCity,secondCity){
 			.attr("x2", x(0))
 			.attr("y2", height);
 
-	}	
+	}
 	function getWidth(citiesData,whichCity,first){
 		var cityData;
 		for (var j=0;j<3;j++){
@@ -100,6 +114,7 @@ function createDoubleBarGraph(firstCity,secondCity){
 		function summAll(valueD) {
 			return valueD.reduce(function(a,b){return a+b});
 		}
+
 		if (first){
 			return Math.abs(d3.extent(cityData, function(d) { return summAll(d.value); })[0]);
 		}
@@ -109,21 +124,20 @@ function createDoubleBarGraph(firstCity,secondCity){
 	}	
 	
 	function convertCityData(cityData,first){
-		cityArray = []
+		cityArray = [];
 		for (var r=0;r<cityData["children"].length;r++){
 			var zipCode = cityData["children"][r]["name"];
 			var schoolCompanyFood = [];
 			for (var t=0;t<3;t++){
 				if (first){
-					schoolCompanyFood.push(-1*cityData["children"][r]["children"][t]["size"])
+					schoolCompanyFood.push(-1*cityData["children"][r]["children"][t]["size"]);
 				}
 				else {
-					schoolCompanyFood.push(cityData["children"][r]["children"][t]["size"])
-
+					schoolCompanyFood.push(cityData["children"][r]["children"][t]["size"]);
 				}
 			}
 			cityArray.push({
-				"name": zipCode,
+				"name":zipCode,
 				"value":schoolCompanyFood
 			});
 		}
