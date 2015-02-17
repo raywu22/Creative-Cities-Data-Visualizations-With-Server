@@ -2,52 +2,18 @@ var express = require('express');
 var https = require('https');
 var router = express.Router();
 
-router.get('/data',function(req,res){
-    var result = "";
-    var url = "https://maps.googleapis.com/maps/api/place/radarsearch/json?location=42.366029,-71.085838&radius=800&types=restaurant|bakery|bar|cafe&key=AIzaSyCP-j5RWqQPLnhUXt3P4RdUMVqpkz_VKxI";
-    https.get(url, function(response) {
-        response.on('data', function(data) {
-            result += data.toString();
-        });
-        response.on('end', function() {
-            res.send(result);
-            res.end();
-        });
-    });
-});
-
 router.get('/',function(req,res,next){
     res.render('index');
     res.end();
 });
 
 router.post('/LatLong',function(req,res,next){
-
-    // for (var i=0;i<listLatLong.length/2;i++){
-    //     var latPoint = listLatLong[2*i];
-    //     var longPoint = listLatLong[2*i+1];
-    //     console.log(latPoint+" "+longPoint);
-    //     for (var j=0;j<listType.length;j++){
-            // var currentListType = listType[j];
-            // var startUrl = "https://maps.googleapis.com/maps/api/place/radarsearch/json?location=";
-            // var key = "AIzaSyCP-j5RWqQPLnhUXt3P4RdUMVqpkz_VKxI";
-            // var radius = 800
-            // var url = startUrl+latPoint+","+longPoint+"&radius="+radius+"&types="+currentListTypelistType+"&key="+key
-            // var index = i*listType.length+j;
-    //         https.get(url,function(response){
-    //             var result = "";
-    //             response.on('data',function(data){
-    //                 result+= data.toString()
-    //             })
-    //             response.on('end',function(){
-    //                 resultJSON = JSON.parse(result);
-    //                 res.send([resultJSON.results.length]).end();
-    //             })
-    //         })
-    //     }
-    // }
+    
+    //default types
     var listType = ["restaurant|bakery|bar|cafe","school|university","subway_station|taxi_stand|train_station"];
     var listLatLong = (req.body["LatLong1"]+","+req.body["LatLong2"]).split(",");
+    
+    console.log(listLatLong);
     for (var l=0;l<listLatLong.length;l++){
         listLatLong[l]=parseFloat(listLatLong[l]);
     }
@@ -102,7 +68,19 @@ router.post('/LatLong',function(req,res,next){
     }
 })
 
-
+// router.get('/data',function(req,res){
+//     var result = "";
+//     var url = "https://maps.googleapis.com/maps/api/place/radarsearch/json?location=42.366029,-71.085838&radius=800&types=restaurant|bakery|bar|cafe&key=AIzaSyCP-j5RWqQPLnhUXt3P4RdUMVqpkz_VKxI";
+//     https.get(url, function(response) {
+//         response.on('data', function(data) {
+//             result += data.toString();
+//         });
+//         response.on('end', function() {
+//             res.send(result);
+//             res.end();
+//         });
+//     });
+// });
 
 
 module.exports = router;

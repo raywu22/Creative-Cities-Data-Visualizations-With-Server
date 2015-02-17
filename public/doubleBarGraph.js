@@ -1,3 +1,5 @@
+//
+
 function createDoubleBarGraph(firstCity,secondCity){
 	url = "./Data/citiesData.json";
 	d3.json(url,function(citiesData){
@@ -10,21 +12,25 @@ function createDoubleBarGraph(firstCity,secondCity){
 	});
 
 	function makeDoubleBarGraph(citiesData,whichCity,first,widthPortion){
-		//console.log(citiesData);
+
 		var height = 2500;
 		var width = 600*widthPortion;
 		var padding = 60;
 		var cityData;
+
+		//looks for city data based on name
 		for (var j=0;j<3;j++){
 			if (whichCity===citiesData["children"][j]["name"]){
 				cityData = citiesData["children"][j];
 			}
 		}
 
-		cityData = convertCityData(cityData,first);	
-		//console.log(cityData);
+		//converts data into array of zipcode objects
+		cityData = convertCityData(cityData,first);
+
+		//x and y scaling
 		var x = d3.scale.linear()
-				.domain(d3.extent(cityData, function(d) { return summAll(d.value); }))
+				.domain(d3.extent(cityData, function(d) { return summAll(d.value);}))
 				.nice()
 				.range([0,width]);
 		var y = d3.scale.ordinal()
@@ -34,6 +40,7 @@ function createDoubleBarGraph(firstCity,secondCity){
 		var color = d3.scale.ordinal()
 				.range(["#98abc5","#6b486b","#ff8c00"]);
 
+		//x and y axis
 		var xAxis = d3.svg.axis()
 				.scale(x)
 				.orient("top")
@@ -43,10 +50,6 @@ function createDoubleBarGraph(firstCity,secondCity){
 			    .attr("height", height + padding + padding)
 			  	.append("g")
 			    .attr("transform", "translate(" + 0 + "," + padding + ")");
-
-		function summAll(valueD) {
-			return valueD.reduce(function(a,b){return a+b});
-		}
 
 		svg.selectAll(".bar")
 			.data(cityData)
@@ -79,10 +82,8 @@ function createDoubleBarGraph(firstCity,secondCity){
 					return x(Math.min(0, summAll(d.value)));
 				}
 				else {
-					console.log(d);
 					return 0;
 				}
-				
 			})
 			.attr("width",function(d){
 				return Math.abs(x(summAll(d.value)) - x(0));
@@ -99,9 +100,13 @@ function createDoubleBarGraph(firstCity,secondCity){
 			.attr("x1", x(0))
 			.attr("x2", x(0))
 			.attr("y2", height);
-
 	}
-	function getWidth(citiesData,whichCity,first){
+
+	var summAll = function(valueD) {
+		return valueD.reduce(function(a,b){return a+b});
+	}
+	
+	var getWidth = function(citiesData,whichCity,first){
 		var cityData;
 		for (var j=0;j<3;j++){
 			if (whichCity===citiesData["children"][j]["name"]){
@@ -111,7 +116,7 @@ function createDoubleBarGraph(firstCity,secondCity){
 
 		cityData = convertCityData(cityData,first);	
 
-		function summAll(valueD) {
+		var summAll = function(valueD) {
 			return valueD.reduce(function(a,b){return a+b});
 		}
 
@@ -121,9 +126,9 @@ function createDoubleBarGraph(firstCity,secondCity){
 		else {
 			return Math.abs(d3.extent(cityData, function(d) { return summAll(d.value); })[1]);
 		}
-	}	
+	}
 	
-	function convertCityData(cityData,first){
+	var convertCityData = function(cityData,first){
 		cityArray = [];
 		for (var r=0;r<cityData["children"].length;r++){
 			var zipCode = cityData["children"][r]["name"];

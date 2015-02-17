@@ -6,7 +6,7 @@ $(document).ready(function() {
   	//createLatLongBarGraph(listLatLong,listType);
 
   	$(function() {
-        $("#myForm").on("submit", function(e) {
+        $("#lat-long-form").on("submit", function(e) {
             e.preventDefault();
             $.ajax({
                 url: $(this).attr("action"),
@@ -15,7 +15,6 @@ $(document).ready(function() {
                 beforeSend: function() {
                 },
                 success: function(data) {
-                	//console.log(data);
                   makeBarGraph(listLatLong,listType,data);
                 }
             });

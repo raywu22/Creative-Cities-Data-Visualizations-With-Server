@@ -1,3 +1,11 @@
+body {
+  padding:20px;
+}
+
+#lat-long-container {
+  margin-bottom: 5px;
+}
+
 .axis text{
   font: 10px sans-serif;
 }      
@@ -41,3 +49,10 @@ rect:hover {
 .whichCity-first {
   margin-bottom: 5px;
 }
+
+#doubleBarGraph {
+  height:500px;
+  width:620px;
+  overflow:auto;
+}
+

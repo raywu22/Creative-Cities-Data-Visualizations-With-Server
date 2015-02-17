@@ -106,35 +106,35 @@ function makeBarGraph(listLatLong,listType,dataset){
       .attr("transform","translate(0"+padding+",0)")
       .call(yAxis);
   svg.append("text")
-    .attr("x", (w / 2))             
-    .attr("y", 30)
-    .attr("text-anchor", "middle")  
-    .style("font-size", "30px") 
-    .style("text-decoration", "underline");
+      .attr("x", (w / 2))             
+      .attr("y", 30)
+      .attr("text-anchor", "middle")  
+      .style("font-size", "30px") 
+      .style("text-decoration", "underline");
 	//Create labels
 	svg.selectAll("text")
-	   .data(dataset)
-	   .enter()
-	   .append("text")
-	   .text(function(d) {
-	   		return d;
-	   })
-	   .attr("text-anchor", "middle")
-	   .attr("x", function(d, i) {
-	   		return xScale(i) + xScale.rangeBand() / 2;
-	   })
-	   .attr("y", function(d) {
-	   		return h - yScale(d) + 14;
-	   })
-	   .attr("font-family", "sans-serif")
-	   .attr("font-size", "11px")
-	   .attr("fill", "white");
+      .data(dataset)
+      .enter()
+      .append("text")
+      .text(function(d) {
+      		return d;
+      })
+      .attr("text-anchor", "middle")
+      .attr("x", function(d, i) {
+      		return xScale(i) + xScale.rangeBand() / 2;
+      })
+      .attr("y", function(d) {
+      		return h - yScale(d) + 14;
+      })
+      .attr("font-family", "sans-serif")
+      .attr("font-size", "11px")
+      .attr("fill", "white");
 	svg.append("text")
-        .attr("x", ((w-padding)/ 2))             
-        .attr("y", padding/2)
-        .attr("text-anchor", "middle")  
-        .style("font-size", "24px") 
-        .style("text-decoration", "underline")  
+      .attr("x", ((w-padding)/ 2))             
+      .attr("y", padding/2)
+      .attr("text-anchor", "middle")  
+      .style("font-size", "24px") 
+      .style("text-decoration", "underline")  
 //        .text("Kendall and Harvard Square");
 	
 	d3.select('#mySubmit')
